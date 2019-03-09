@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="js/jquery.mobile-1.4.5.min.css" />
+
+  <link rel="stylesheet" href="css/MyStogere.css" />
+  <script src="js/jquery-1.4.2.min.js"></script>
+  <script src="js/jquery.mobile-1.4.5.js"></script>
+  <script src="js/dateformat.js"></script>
+  <script src="js/DBMyStorages.js"></script>
+  <title>My Storages</title>
+</head>
+<!-- /header -->
+
+<body>
+  <!-- Start of first page -->
+  <div data-role="page" id="mainPage">
+    <div data-role="header">
+      <h1>My Storages</h1>
+      <a href="#AOU" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Add New</a>
+
+      <div role="main">
+        <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true" data-filter-placeholder="Search Name Of Report..."></ul>
+      </div>
+    </div>
+    <!-- /content -->
+    <div data-role="footer" data-position="fixed">
+      <nav data-role="navbar">
+        <ul>
+          <li><a href="#AddSFPage">Add Storages Features</a></li>
+          <li><a href="#AddSTPage">Add Storages Types</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <!-- /page -->
+
+  <!--Add Or Update Page-->
+  <div data-role="page" id="AOU">
+    <div data-role="header">
+      <h1>Fill The Form</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+
+    </div>
+    <!-- /header -->
+
+    <div role="main">
+      <form method="POST" id="sub">
+        <div data-role="fieldcontain">
+          <input type="hidden" name="IDMS" id="IDMS" />
+          <label for="NameOfRP">Name Of The Report:</label>
+          <input type="text" name="NameOfRP" id="NameOfRP" placeholder="Input The Name Of The Report" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Dimensions">Dimensions:</label>
+          <input type="number" name="Dimensions" id="Dimensions" placeholder="e.g. 2m2, 4m2, etc." />
+        </div>
+        <div data-role="fieldcontain">
+          <label for="MonthlyRentPrice">Monthly Rent Price :</label>
+          <input type="number" name="MRP" id="MRP" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageType" id="">Storage Type:</label>
+          <select name="StorageTypes" id="StorageTypes">
+            <option selected="selected" value="default">--Choose Storage Type--</option>
+          </select>
+    </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageFeatures">Storage Features:</label>
+          <select name="StorageFeatures" id="StorageFeatures">
+            <option selected="selected" value="default">--Choose Storage Features--</option>
+          </select>
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Notes">Notes:</label>
+          <textarea name="Notes" id="Notes" cols="30" rows="10"></textarea>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- /content-->
+
+    <div data-role="footer" data-position="fixed">
+      <nav data-role="navbar">
+        <ul>
+          <li><a onclick="Submit()">Submit</a></li>
+          <li><a onclick="Update()">Update</a></li>
+        </ul>
+      </nav>
+    </div>
+    <!-- /footer -->
+  </div>
+  <!--Add Storage Feature Page-->
+  <div data-role="page" id="AddSFPage" data-theme="a">
+    <div data-role="header">
+      <h1>Storages Feature</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+    </div>
+    <!-- /header -->
+
+    <div role="main" class="ui-content">
+      <!-- FORM INPUT   -->
+      <div>
+        <div data-role="fieldcontain">
+          <input type="hidden" name="IDSF" id="IDSF" />
+          <label for="StoragesFeatures">Storages Feature:</label>
+          <input type="text" name="NameSF" id="NameSF" placeholder="Input Storage Feature" />
+          <br />
+          <br>
+          <div data-type="horizontal" style="text-align:center">
+            <button onclick="SubmitSF()" class="ui-btn ">
+              Submit
+            </button>
+            <button onclick="UpdateSF()" class="ui-btn ">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- SHOW DATA -->
+      <div>
+        <table id="ShowDataSF" data-role="table" class="ui-responsive table-stroke"></table>
+      </div>
+    </div>
+    <!-- /content -->
+
+
+    <!-- /footer -->
+  </div>
+  <!-- /page -->
+
+  <!--Add Storage Types Page-->
+  <div data-role="page" id="AddSTPage">
+    <div data-role="header">
+      <h1>Storages Type</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+    </div>
+    <!-- /header -->
+
+    <div role="main" class="ui-content">
+      <div>
+        <div data-role="fieldcontain">
+          <input type="hidden" name="IDST" id="IDST" />
+          <label for="StoragesTypes">Storages Type:</label>
+          <input type="text" name="NameST" id="NameST" placeholder="Input Storage Types" />
+          <br />
+          <div data-type="horizontal" style="text-align:center">
+            <br>
+            <button onclick="SubmitST()" class="ui-btn ">
+              Submit
+            </button>
+            <button onclick="UpdateST()" class="ui-btn ">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- SHOW DATA -->
+      <div>
+        <table id="ShowDataST" data-role="table" class="ui-responsive table-stroke"></table>
+      </div>
+    </div>
+  </div>
+  <!-- /content -->
+  </div>
+  <!-- /page -->
+
+  <!-- DEtail -->
+  <div data-role="page" id="Detail">
+
+    <div data-role="header">
+      <h1>Detail</h1> <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+      <div id="ShowDetail"></div>
+
+
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+      <nav data-role="navbar" id="footermain">
+
+      </nav>
+    </div>
+  </div><!-- /page -->
+</body>
+
+
+</html>
