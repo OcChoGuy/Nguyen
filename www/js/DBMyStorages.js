@@ -97,6 +97,7 @@ function GetData() {
           });
           html += "<p class='Feature'></p>";
           html += "<p class='Type'></p></a>";
+          html+= " <a href='#purchase' data-rel='popup' data-position-to='window' data-transition='pop'></a>";
           html += "</li>";
         }
 

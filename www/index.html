@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0 ,maximum-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="js/jquery.mobile-1.4.5.min.css" />
-
+  <link rel="stylesheet" href="js/jquery.mobile.icons-1.4.5.css">
   <link rel="stylesheet" href="css/MyStogere.css" />
-  <script src="js/jquery-1.4.2.min.js"></script>
+  <script src="js/jquery-2.x-git.js"></script>
   <script src="js/jquery.mobile-1.4.5.js"></script>
   <script src="js/dateformat.js"></script>
   <script src="js/DBMyStorages.js"></script>
@@ -26,12 +26,22 @@
           <a href="#AddSTPage" class="ui-btn">Add Storages Types</a>
         </div><!-- /panel -->
     <div data-role="header">
-          
+
       <h1>My Storages</h1>
       <a href="#mypanel" class="ui-btn" >Menu</a>
       <a href="#AddMainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Add New</a>
+
       <div role="main">
-        <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true" data-filter-placeholder="Search Name Of Report..."></ul>
+        <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true" data-filter-placeholder="Search Name Of Report..." data-split-icon="gear" data-split-theme="a"></ul>
+
+        
+        
+      </div>
+      <div data-role="popup" id="purchase" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+          <h3>Purchase Album?</h3>
+      <p>Your download will begin immediately on your mobile device when you purchase.</p>
+          <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Buy: $10.99</a>
+          <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
       </div>
     </div>
     <!-- /content -->
@@ -260,6 +270,8 @@
       </nav>
     </div>
   </div><!-- /page -->
+
+
 </body>
 
 

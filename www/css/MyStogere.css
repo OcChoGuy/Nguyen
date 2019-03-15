@@ -10,7 +10,7 @@ tr:nth-child(even) {
     margin: 0 auto;
     margin-left: auto;
     margin-right: auto;
-    align: center;
+    
     text-align: center;
 }
 .hide{
