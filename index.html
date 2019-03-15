@@ -7,167 +7,52 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+  <link rel="stylesheet" href="www/js/jquery.mobile-1.4.5.css">
+  <link rel="stylesheet" href="www/css/bootstrap.css">
+  <script src="www/js/jquery-2.x-git.js"></script>
+  <script src="www/js/jquery.mobile-1.4.5.js"></script>
 
-  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <title>Hello World</title>
 </head>
 
 <body>
-  <input type="text" placeholder="Name" id="Id" />
-  <input type="text" placeholder="Name" id="Name" />
-  <button onclick="Submit()">Submit</button>
-  <button onclick="Update()">Update</button>
-  <table>
-    <thead>
-      <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Operation</td>
-      </tr>
-    </thead>
-    <tbody id="NameList"></tbody>
-  </table>
+  <!-- Start of first page -->
+<div data-role="page" id="foo">
 
-  <!---->
-  <!--  -->
+	<div data-role="header">
+		<h1>Foo</h1>
+	</div><!-- /header -->
 
-  <script>
-    var db = window.openDatabase(
-      "DatabaseNow",
-      "1.0",
-      "StorageApp Demo",
-      200000
-    );
-    GetList();
-    db.transaction(function (tx) {
-      var sqlStatement =
-        "CREATE TABLE IF NOT EXISTS DEMO (Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT)";
-      tx.executeSql(
-        sqlStatement,
-        [],
-        function (tx, result) {
-          console.log("Create Table Demo Successfully");
-        },
-        function (error) {
-          console.log(error);
-        }
-      );
-    });
+	<div role="main" class="ui-content">
+		<div>
+      <input  name="ID" id="ID"type="hidden" >
+      <label for="Name">Name:</label>
+      <input type="text" name="Name" id="Name">
+    </div>
+    <button onclick="Submit"> </button>
+	</div><!-- /content -->
 
-    function Submit() {
-      db.transaction(function (tx) {
-        var name = $("#Name").val();
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
 
-        var sqlStatement = "INSERT INTO DEMO (Name) VALUES(?)";
-        tx.executeSql(
-          sqlStatement,
-          [name],
-          function (tx, result) {
-            console.log("Insert Successfully");
-            GetList();
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      });
-    }
+<!-- Start of second page -->
+<div data-role="page" id="detail">
 
-    function GetList() {
-      db.transaction(function (tx) {
-        var sqlStatement = "SELECT * FROM DEMO";
-        tx.executeSql(
-          sqlStatement,
-          [],
-          function (tx, results) {
-            var len = results.rows.length,
-              i;
-            var html = "";
-            console.log(results);
-            for (i = 0; i < len; i++) {
-              html += "<tr>";
-              html += "<td>" + results.rows.item(i).Id + "</td>";
-              html += "<td>" + results.rows.item(i).Name + "</td>";
-              html +=
-                "<td><button onclick=Edit(" +
-                results.rows.item(i).Id +
-                ")>Edit</button><button onclick=Delete(" +
-                results.rows.item(i).Id +
-                ")>Delete</button></td>";
-              html += "</tr>";
-            }
-            $("#NameList").html(html);
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      });
-    }
+	<div data-role="header">
+		<h1>Bar</h1>
+	</div><!-- /header -->
 
-    function Delete(Id) {
-      db.transaction(function (tx) {
-        var sqlStatement = "DELETE FROM DEMO where id=?";
-        tx.executeSql(
-          sqlStatement,
-          [Id],
-          function (tx, results) {
-            alert("Xoa Thanh Cong");
-            GetList();
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      });
-    }
+	<div role="main" class="ui-content">
+		
+	</div><!-- /content -->
 
-    function Edit(Id) {
-      db.transaction(function (tx) {
-        var sqlStatement = "SELECT * FROM DEMO WHERE Id=?";
-        tx.executeSql(
-          sqlStatement,
-          [Id],
-          function (tx, results) {
-            console.log(results);
-            var Id = results.rows.item(0).Id;
-            var Name = results.rows.item(0).Name;
-
-            $("#Id").val(Id);
-            $("#Name").val(Name);
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      });
-    }
-
-    function Update() {
-      var Id = $("#Id").val();
-      var Name = $("#Name").val();
-      db.transaction(function (tx) {
-        var name = $("#Name").val();
-
-        var sqlStatement = "UPDATE DEMO SET Name=? WHERE Id=?";
-        tx.executeSql(
-          sqlStatement,
-          [Name, Id],
-          function (tx, result) {
-            alert("Update Succesfully");
-            GetList();
-          },
-          function (error) {
-            console.log(error);
-          }
-        );
-      });
-    }
-  </script>
-  <script type="text/javascript">
-    app.initialize();
-  </script>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+ 
 </body>
 
 </html>

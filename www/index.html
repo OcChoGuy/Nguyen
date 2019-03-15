@@ -17,30 +17,33 @@
 <!-- /header -->
 
 <body>
+<!-- side menu -->
+
   <!-- Start of first page -->
   <div data-role="page" id="mainPage">
+      <div data-role="panel" id="mypanel" data-display="reveal" data-position="left">
+          <a href="#AddSFPage" class="ui-btn">Add Storages Features</a>
+          <a href="#AddSTPage" class="ui-btn">Add Storages Types</a>
+        </div><!-- /panel -->
     <div data-role="header">
+          
       <h1>My Storages</h1>
-      <a href="#AOU" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Add New</a>
-
+      <a href="#mypanel" class="ui-btn" >Menu</a>
+      <a href="#AddMainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Add New</a>
       <div role="main">
         <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true" data-filter-placeholder="Search Name Of Report..."></ul>
       </div>
     </div>
     <!-- /content -->
-    <div data-role="footer" data-position="fixed">
-      <nav data-role="navbar">
-        <ul>
-          <li><a href="#AddSFPage">Add Storages Features</a></li>
-          <li><a href="#AddSTPage">Add Storages Types</a></li>
-        </ul>
-      </nav>
-    </div>
+    
   </div>
+  
   <!-- /page -->
 
-  <!--Add Or Update Page-->
-  <div data-role="page" id="AOU">
+
+
+  <!--Add Main Page-->
+  <div data-role="page" id="AddMainPage">
     <div data-role="header">
       <h1>Fill The Form</h1>
       <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
@@ -93,6 +96,74 @@
       <nav data-role="navbar">
         <ul>
           <li><a onclick="Submit()">Submit</a></li>
+        
+        </ul>
+      </nav>
+    </div>
+    <!-- /footer -->
+  </div>
+  
+
+
+    <!-- /footer -->
+  </div>
+  <!-- /page -->
+
+  <!-- Update Main Page -->
+  <div data-role="page" id="UpdateMainPage">
+    <div data-role="header">
+      <h1>Fill The Form</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+
+    </div>
+    <!-- /header -->
+
+    <div role="main">
+      <form method="POST" id="sub">
+        <div data-role="fieldcontain">
+          <input type="hidden" name="UpdateIDMS" id="UpdateIDMS" />
+          <label for="NameOfRP">Name Of The Report:</label>
+          <input type="text" name="UpdateNameOfRP" id="UpdateNameOfRP" placeholder="Input The Name Of The Report" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Dimensions">Dimensions:</label>
+          <input type="number" name="UpdateDimensions" id="UpdateDimensions" placeholder="e.g. 2m2, 4m2, etc." />
+        </div>
+        <div data-role="fieldcontain">
+          <label for="MonthlyRentPrice">Monthly Rent Price :</label>
+          <input type="number" name="UpdateMRP" id="UpdateMRP" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageType" id="">Storage Type:</label>
+          <select name="UpdateStorageTypes" id="UpdateStorageTypes">
+            <option selected="selected" value="default">--Choose Storage Type--</option>
+          </select>
+    </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageFeatures">Storage Features:</label>
+          <select name="UpdateStorageFeatures" id="UpdateStorageFeatures">
+            <option selected="selected" value="default">--Choose Storage Features--</option>
+          </select>
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Notes">Notes:</label>
+          <textarea name="UpdateNotes" id="UpdateNotes" cols="30" rows="10"></textarea>
+       
+        </div>
+
+      </form>
+    </div>
+
+    <!-- /content-->
+
+    <div data-role="footer" data-position="fixed">
+      <nav data-role="navbar">
+        <ul>
+         
           <li><a onclick="Update()">Update</a></li>
         </ul>
       </nav>
@@ -117,12 +188,8 @@
           <br />
           <br>
           <div data-type="horizontal" style="text-align:center">
-            <button onclick="SubmitSF()" class="ui-btn ">
-              Submit
-            </button>
-            <button onclick="UpdateSF()" class="ui-btn ">
-              Update
-            </button>
+            <button onclick="SubmitSF()" class="ui-btn ">Submit</button>
+           
           </div>
         </div>
       </div>
@@ -159,9 +226,7 @@
             <button onclick="SubmitST()" class="ui-btn ">
               Submit
             </button>
-            <button onclick="UpdateST()" class="ui-btn ">
-              Update
-            </button>
+         
           </div>
         </div>
       </div>

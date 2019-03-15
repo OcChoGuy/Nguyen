@@ -1,6 +1,6 @@
 // Mo DB
 var db = window.openDatabase(
-  "DBMyStoreges12",
+  "1661",
   "1.0",
   "My Storeges",
   200000000000000
@@ -62,6 +62,7 @@ function CreateDB() {
 
 
 function GetData() {
+  
   db.transaction(function (tx) {
     var sqlStatement = "SELECT * FROM MYSTORAGES";
     tx.executeSql(
@@ -114,14 +115,12 @@ function GetData() {
       var length = result.rows.length,
         i;
       var html =
-        "<thead><tr><th>Storage Features</th><th></th></tr><tr></tr></thead>";
+        "<thead><tr><th>Storage Features</th><th></th></tr></thead>";
       for (i = 0; i < length; i++) {
         html +=
           "<tbody><tr><td>" +
           result.rows.item(i).STORAGESFEATURESNAME +
-          "</td><td><button class='ui-btn ui-corner-all ui-shadow' onclick=EditSF(" +
-          result.rows.item(i).ID +
-          ")>Edit</button> </td><td> <button class='ui-btn ui-corner-all ui-shadow' onclick=DeleteSF(" +
+          "</td><td> <button class='ui-btn ui-corner-all ui-shadow' onclick=DeleteSF(" +
           result.rows.item(i).ID +
           ")>Delete</button></td></tr></tbody>";
       }
@@ -137,14 +136,12 @@ function GetData() {
       var length = result.rows.length,
         i;
       var html =
-        "<thead><tr><th>Storage Types</th><th></th></tr><tr></tr></thead>";
+        "<thead><tr><th>Storage Types</th><th></th></tr></thead>";
       for (i = 0; i < length; i++) {
         html +=
           "<tbody><tr><td>" +
           result.rows.item(i).STORAGESTYPESNAME +
-          "</td><td><button class='ui-btn ui-corner-all ui-shadow' onclick=EditST(" +
-          result.rows.item(i).ID +
-          ")>Edit</button> </td><td> <button class='ui-btn ui-corner-all ui-shadow' onclick=DeleteST(" +
+          "</td><td> <button class='ui-btn ui-corner-all ui-shadow' onclick=DeleteST(" +
           result.rows.item(i).ID +
           ")>Delete</button></td></tr></tbody>";
       }
@@ -208,7 +205,7 @@ function Submit() {
         storagetypes
       ],
       function (tx, result) {
-        console.log(result);
+        console.log(result) ;
         $("#MRP").val("");
         $("#Notes").val("");
         $("#Dimensions").val("");
@@ -261,7 +258,7 @@ function Detail(ID) {
         html += "<p>DATETIME: " + results.rows.item(0).DATETIME + "</p><hr>";
 
         $("#ShowDetail").html(html);
-        html2 += "<button onclick='Delete(" + results.rows.item(0).ID + ")'><a href='#mainPage'>Delete</a></button><button onclick='Edit(" + results.rows.item(0).ID + ")'><a href='#AOU'>Edit</button>";
+        html2 += "<button onclick='Delete(" + results.rows.item(0).ID + ")'><a href='#mainPage'>Delete</a></button><button onclick='Edit(" + results.rows.item(0).ID + ")'><a href='#UpdateMainPage'>Edit</button>";
         $("#footermain").html(html2);
       },
       function (error) {
@@ -289,6 +286,32 @@ function Delete(ID) {
 }
 
 function Edit(ID) {
+   db.transaction(function (tx) {
+    var sqlStatement = "SELECT * FROM STORAGEFEATURES";
+    tx.executeSql(sqlStatement, [], function (tx, result) {
+      var length = result.rows.length,
+        i;
+      var html = "<option class='hide'></option>";
+      for (i = 0; i < length; i++) {
+        html += "<option value='" + result.rows.item(i).ID + "'>" + result.rows.item(i).STORAGESFEATURESNAME + "</option>";
+      }
+      $("#UpdateStorageFeatures").html(html);
+    });
+  });
+  // DROPDOWNLIST StoragesTypes
+  db.transaction(function (tx) {
+    var sqlStatement = "SELECT * FROM STORAGETYPES";
+    tx.executeSql(sqlStatement, [], function (tx, result) {
+      var length = result.rows.length,
+        i;
+      var html = "<option class='hide'></option>";
+      for (i = 0; i < length; i++) {
+        html += "<option value='" + result.rows.item(i).ID + "'>" + result.rows.item(i).STORAGESTYPESNAME + "</option>";
+      }
+      $("#UpdateStorageTypes").html(html);
+    });
+  });
+
   db.transaction(function (tx) {
     var sqlStatement = "SELECT * FROM MYSTORAGES WHERE ID=?";
     tx.executeSql(
@@ -304,13 +327,15 @@ function Edit(ID) {
         var REPORTNAME = results.rows.item(0).REPORTNAME;
         var STORAGEFEATURES = results.rows.item(0).STORAGEFEATURES;
         var STORAGETYPES = results.rows.item(0).STORAGETYPES;
-        $("#IDMS").val(Id);
-        $("#Dimensions").val(DIMENSIONS);
-        $("#MRP").val(MONTHRENTPRICE);
-        $("#StorageTypes").val(STORAGETYPES);
-        $("#StorageFeatures").val(STORAGEFEATURES);
-        $("#Notes").val(NOTE);
-        $("#NameOfRP").val(REPORTNAME);
+        $("#UpdateIDMS").val(Id);
+        $("#UpdateDimensions").val(DIMENSIONS);
+        $("#UpdateMRP").val(MONTHRENTPRICE);
+        $("#UpdateStorageTypes ").val(STORAGETYPES);
+        $("#UpdateStorageFeatures").val(STORAGEFEATURES);
+        
+        $("#UpdateNotes").val(NOTE);
+        $("#UpdateNameOfRP").val(REPORTNAME);
+        GetData();
 
       },
       function (error) {
@@ -321,13 +346,13 @@ function Edit(ID) {
 }
 
 function Update() {
-  var ID = $("#IDMS").val();
-  var DIMENSIONS = $("#Dimensions").val();
-  var MONTHRENTPRICE = $("#MRP").val();
-  var NOTE = $("#StorageTypes").val();
-  var STORAGETYPES = $("#StorageTypes").val();
-  var STORAGEFEATURES = $("#StorageFeatures").val();
-  var REPORTNAME = $("#NameOfRP").val();
+  var ID = $("#UpdateIDMS").val();
+  var DIMENSIONS = $("#UpdateDimensions").val();
+  var MONTHRENTPRICE = $("#UpdateMRP").val();
+  var NOTE = $("#UpdateStorageTypes").val();
+  var STORAGETYPES = $("#UpdateStorageTypes").val();
+  var STORAGEFEATURES = $("#UpdateStorageFeatures").val();
+  var REPORTNAME = $("#UpdateNameOfRP").val();
 
   db.transaction(function (tx) {
 
@@ -337,13 +362,12 @@ function Update() {
       [REPORTNAME, DIMENSIONS, MONTHRENTPRICE, NOTE, STORAGEFEATURES, STORAGETYPES, ID],
       function (tx, result) {
         alert("Update Succesfully");
-        $("#MRP").val("");
-        $("#Notes").val("");
-        $("#Dimensions").val("");
-        $("#NameOfRP").val("");
-
-        document.getElementById('StorageTypes').value = 'default';
-        document.getElementById('StorageFeatures').value = 'default';
+        $("#UpdateMRP").val("");
+        $("#UpdateNotes").val("");
+        $("#UpdateDimensions").val("");
+        $("#UpdateNameOfRP").val("");
+        $("#UpdateStorageTypes").val("default");
+        $("#UpdateStorageFeatures").val("default");
         GetData();
       },
       function (error) {
@@ -364,6 +388,7 @@ function SubmitSF() {
       [name],
       function (tx, result) {
         console.log("Create Success.");
+        console.log(result)
         $("#NameSF").val("");
         GetData();
       },
@@ -374,25 +399,6 @@ function SubmitSF() {
   });
 }
 
-function EditSF(ID) {
-  db.transaction(function (tx) {
-    var sqlStatement = "SELECT * FROM STORAGEFEATURES WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [ID],
-      function (tx, result) {
-        console.log("DONE");
-        var Id = result.rows.item(0).ID;
-        var Name = result.rows.item(0).STORAGESFEATURESNAME;
-        $("#IDSF").val(Id);
-        $("#NameSF").val(Name);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-  });
-}
 
 function DeleteSF(ID) {
   db.transaction(function (tx) {
@@ -410,26 +416,6 @@ function DeleteSF(ID) {
   });
 }
 
-function UpdateSF() {
-  var Id = $("#IDSF").val();
-  var Name = $("#NameSF").val();
-  db.transaction(function (tx) {
-    var name = $("#NameSF").val();
-
-    var sqlStatement =
-      "UPDATE STORAGEFEATURES SET STORAGESFEATURESNAME=? WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [Name, Id],
-      function (tx, result) {
-        GetData();
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-  });
-}
 
 // FUNC ST
 function SubmitST() {
@@ -451,25 +437,6 @@ function SubmitST() {
   });
 }
 
-function EditST(ID) {
-  db.transaction(function (tx) {
-    var sqlStatement = "SELECT * FROM STORAGETYPES WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [ID],
-      function (tx, result) {
-        console.log("DONE");
-        var Id = result.rows.item(0).ID;
-        var Name = result.rows.item(0).STORAGESTYPESNAME;
-        $("#IDST").val(Id);
-        $("#NameST").val(Name);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-  });
-}
 
 function DeleteST(ID) {
   db.transaction(function (tx) {
@@ -487,21 +454,3 @@ function DeleteST(ID) {
   });
 }
 
-function UpdateST() {
-  var Id = $("#IDST").val();
-  var Name = $("#NameST").val();
-  db.transaction(function (tx) {
-    var name = $("#NameST").val();
-    var sqlStatement = "UPDATE STORAGETYPES SET STORAGESTYPESNAME=? WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [Name, Id],
-      function (tx, result) {
-        GetData();
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-  });
-}
