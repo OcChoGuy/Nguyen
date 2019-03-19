@@ -7,11 +7,105 @@ var db = window.openDatabase(
 );
 
 $(document).ready(function () {
-  GetData();
+
   CreateDB();
-  var html = "";
-  $("#ulgetdata").html(html);
+  GetData();
 });
+
+$("#AddMainPage").on("pageinit", function () {
+  $("form").validate({
+    rules: {
+      NameOfRP: {
+        required: true
+      },
+      Dimensions: {
+        required: true
+      },
+      MRP: {
+        required: true
+      },
+      StorageTypes: {
+        required: true
+      },
+      StorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      NameOfRP: {
+        required: 'Please Enter Name'
+      },
+      Dimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      MRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      StorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      StorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+      $(':mobile-pagecontainer').pagecontainer('change', '#page1', Submit());
+      return false;
+    }
+  });
+
+});
+// fix luc chuyen trang
+$("#UpdateMainPage").on("pageinit", function () {
+  $("form").validate({
+    rules: {
+      UpdateNameOfRP: {
+        required: true
+      },
+      UpdateDimensions: {
+        required: true
+      },
+      UpdateMRP: {
+        required: true
+      },
+      UpdateStorageTypes: {
+        required: true
+      },
+      UpdateStorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      UpdateNameOfRP: {
+        required: 'Please Enter Name'
+      },
+      UpdateDimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      UpdateMRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      UpdateStorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      UpdateStorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Update());
+      return false;
+    }
+  });
+});
+
+
 
 // TAO BANG
 function CreateDB() {
@@ -61,8 +155,10 @@ function CreateDB() {
 }
 
 
+
+
 function GetData() {
-  
+
   db.transaction(function (tx) {
     var sqlStatement = "SELECT * FROM MYSTORAGES";
     tx.executeSql(
@@ -72,7 +168,7 @@ function GetData() {
         var length = result.rows.length,
           i;
         var html = "";
-        var html2="";
+        var html2 = "";
         for (i = 0; i < length; i++) {
           var StorageId = result.rows.item(i).STORAGEFEATURES;
           var StorageType = result.rows.item(i).STORAGETYPES;
@@ -98,19 +194,19 @@ function GetData() {
           });
           html += "<p class='Feature'></p>";
           html += "<p class='Type'></p>";
-          html+= "<p id='NoteUpdate'>Note: "+result.rows.item(i).NOTE+"</p></a>"
-          html+= " <a href='#purchase' onclick='EditNote("+result.rows.item(i).ID+")' data-rel='popup' data-position-to='window' data-transition='pop'>P</a>";
+          html += "<p id='NoteUpdate'>Note: " + result.rows.item(i).NOTE + "</p></a>"
+          html += " <a href='#purchase' onclick='EditNote(" + result.rows.item(i).ID + ")' data-rel='popup' data-position-to='window' data-transition='pop'>P</a>";
           html += "</li>";
         }
 
         $("#ListMS").html(html);
-        
+
         html2 += "<input type='hidden' id='IDNOTE'> "
-        html2 +="<h3>Note:</h3>"
-        html2 +="<textarea id='NoteTextArea' rows='5' cols='30'>"
+        html2 += "<h3>Note:</h3>"
+        html2 += "<textarea id='NoteTextArea' rows='5' cols='30'>"
         html2 += "</textarea>"
         html2 += " <a onclick='UpdateNote()' data-rel='back' class='ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini'>Submit</a>"
-        $("#purchase").html(html2); 
+        $("#purchase").html(html2);
       },
       function (error) {
         console.log(error);
@@ -188,51 +284,6 @@ function GetData() {
 
 }
 
-function EditNote(ID){
-  console.log(ID);
-  db.transaction(function (tx) {
-    var sqlStatement = "SELECT * FROM MYSTORAGES WHERE ID =?";
-    tx.executeSql(
-      sqlStatement,
-      [ID],
-      function (tx, result) {
-        
-          $("#IDNOTE").val(result.rows.item(0).ID);
-
-          
-        $("#NoteTextArea").val(result.rows.item(0).NOTE);
-    },
-    function (error) {
-      console.log(error);
-    }
-  );
-});
-}
-function UpdateNote(){
-  var note= $("#NoteTextArea").val();
-  var id = $("#IDNOTE").val();
-
-  db.transaction(function (tx) {
-
-    var sqlStatement = "UPDATE MYSTORAGES SET NOTE=? WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [note,id],
-      function (tx, result) {
-        console.log(note);
-
-        alert("Update Succesfully");
-        $("#NoteTextArea").val("");
-        $("#IDNOTE").val();
-        GetData();
-      },
-      function (error) {
-        console.log("loi");
-      }
-    );
-  });
-  
-}
 function Submit() {
 
   var d = new Date();
@@ -260,7 +311,7 @@ function Submit() {
         storagetypes
       ],
       function (tx, result) {
-        console.log(result) ;
+        console.log(result);
         $("#MRP").val("");
         $("#Notes").val("");
         $("#Dimensions").val("");
@@ -270,7 +321,7 @@ function Submit() {
         document.getElementById('StorageFeatures').value = 'default';
         alert("Success");
         GetData();
-        
+
       },
       function (error) {
         console.log("loi");
@@ -278,6 +329,87 @@ function Submit() {
     );
   });
 }
+
+function Update() {
+  var ID = $("#UpdateIDMS").val();
+  var DIMENSIONS = $("#UpdateDimensions").val();
+  var MONTHRENTPRICE = $("#UpdateMRP").val();
+  var NOTE = $("#UpdateNotes").val();
+  var STORAGETYPES = $("#UpdateStorageTypes").val();
+  var STORAGEFEATURES = $("#UpdateStorageFeatures").val();
+  var REPORTNAME = $("#UpdateNameOfRP").val();
+
+  db.transaction(function (tx) {
+
+    var sqlStatement = "UPDATE MYSTORAGES SET REPORTNAME=?,DIMENSIONS=?,MONTHRENTPRICE=?,NOTE=?,STORAGEFEATURES=?,STORAGETYPES=? WHERE ID=?";
+    tx.executeSql(
+      sqlStatement,
+      [REPORTNAME, DIMENSIONS, MONTHRENTPRICE, NOTE, STORAGEFEATURES, STORAGETYPES, ID],
+      function (tx, result) {
+        alert("Update Succesfully");
+        $("#UpdateMRP").val("");
+        $("#UpdateNotes").val("");
+        $("#UpdateDimensions").val("");
+        $("#UpdateNameOfRP").val("");
+        $("#UpdateStorageTypes").val("default");
+        $("#UpdateStorageFeatures").val("default");
+        GetData();
+      },
+      function (error) {
+        console.log("loi");
+      }
+    );
+  });
+}
+
+function EditNote(ID) {
+  console.log(ID);
+  db.transaction(function (tx) {
+    var sqlStatement = "SELECT * FROM MYSTORAGES WHERE ID =?";
+    tx.executeSql(
+      sqlStatement,
+      [ID],
+      function (tx, result) {
+
+        $("#IDNOTE").val(result.rows.item(0).ID);
+
+
+        $("#NoteTextArea").val(result.rows.item(0).NOTE);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  });
+}
+
+function UpdateNote() {
+  var note = $("#NoteTextArea").val();
+  var id = $("#IDNOTE").val();
+
+  db.transaction(function (tx) {
+
+    var sqlStatement = "UPDATE MYSTORAGES SET NOTE=? WHERE ID=?";
+    tx.executeSql(
+      sqlStatement,
+      [note, id],
+      function (tx, result) {
+        console.log(note);
+
+        alert("Update Succesfully");
+        $("#NoteTextArea").val("");
+        $("#IDNOTE").val();
+        GetData();
+      },
+      function (error) {
+        console.log("loi");
+      }
+    );
+  });
+}
+
+
+
 
 function Detail(ID) {
   db.transaction(function (tx) {
@@ -287,7 +419,7 @@ function Detail(ID) {
       sqlStatement,
       [ID],
       function (tx, results) {
-      
+
         var html = "";
         var html2 = "";
 
@@ -342,7 +474,7 @@ function Delete(ID) {
 }
 
 function Edit(ID) {
-   db.transaction(function (tx) {
+  db.transaction(function (tx) {
     var sqlStatement = "SELECT * FROM STORAGEFEATURES";
     tx.executeSql(sqlStatement, [], function (tx, result) {
       var length = result.rows.length,
@@ -388,7 +520,7 @@ function Edit(ID) {
         $("#UpdateMRP").val(MONTHRENTPRICE);
         $("#UpdateStorageTypes ").val(STORAGETYPES);
         $("#UpdateStorageFeatures").val(STORAGEFEATURES);
-        
+
         $("#UpdateNotes").val(NOTE);
         $("#UpdateNameOfRP").val(REPORTNAME);
         GetData();
@@ -402,37 +534,6 @@ function Edit(ID) {
   });
 }
 
-function Update() {
-  var ID = $("#UpdateIDMS").val();
-  var DIMENSIONS = $("#UpdateDimensions").val();
-  var MONTHRENTPRICE = $("#UpdateMRP").val();
-  var NOTE = $("#UpdateNotes").val();
-  var STORAGETYPES = $("#UpdateStorageTypes").val();
-  var STORAGEFEATURES = $("#UpdateStorageFeatures").val();
-  var REPORTNAME = $("#UpdateNameOfRP").val();
-
-  db.transaction(function (tx) {
-
-    var sqlStatement = "UPDATE MYSTORAGES SET REPORTNAME=?,DIMENSIONS=?,MONTHRENTPRICE=?,NOTE=?,STORAGEFEATURES=?,STORAGETYPES=? WHERE ID=?";
-    tx.executeSql(
-      sqlStatement,
-      [REPORTNAME, DIMENSIONS, MONTHRENTPRICE, NOTE, STORAGEFEATURES, STORAGETYPES, ID],
-      function (tx, result) {
-        alert("Update Succesfully");
-        $("#UpdateMRP").val("");
-        $("#UpdateNotes").val("");
-        $("#UpdateDimensions").val("");
-        $("#UpdateNameOfRP").val("");
-        $("#UpdateStorageTypes").val("default");
-        $("#UpdateStorageFeatures").val("default");
-        GetData();
-      },
-      function (error) {
-        console.log("loi");
-      }
-    );
-  });
-}
 
 // FUNC SF
 function SubmitSF() {
@@ -510,4 +611,3 @@ function DeleteST(ID) {
     );
   });
 }
-
