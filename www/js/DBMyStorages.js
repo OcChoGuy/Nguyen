@@ -1,4 +1,10 @@
 // Mo DB
+
+
+
+$("#mainPage").on("pageinit", function () {
+  console.log("asd");
+});
 var db = window.openDatabase(
   "1661a",
   "1.0",
@@ -10,102 +16,11 @@ $(document).ready(function () {
 
   CreateDB();
   GetData();
-});
-
-$("#AddMainPage").on("pageinit", function () {
-  $("form").validate({
-    rules: {
-      NameOfRP: {
-        required: true
-      },
-      Dimensions: {
-        required: true
-      },
-      MRP: {
-        required: true
-      },
-      StorageTypes: {
-        required: true
-      },
-      StorageFeatures: {
-        required: true
-      }
-    },
-    messages: {
-      NameOfRP: {
-        required: 'Please Enter Name'
-      },
-      Dimensions: {
-        required: 'Please Enter Dimensions'
-      },
-      MRP: {
-        required: 'Please Enter Month Rent Price'
-      },
-      StorageTypes: {
-        required: 'Please Choose Storages Types'
-      },
-      StorageFeatures: {
-        required: 'Please Choose Storages Features'
-      }
-    },
-    errorPlacement: function (error, element) {
-      error.insertAfter(element.parent());
-    },
-    submitHandler: function (form) {
-      $(':mobile-pagecontainer').pagecontainer('change', '#page1', Submit());
-      return false;
-    }
-  });
 
 });
+
+
 // fix luc chuyen trang
-$("#UpdateMainPage").on("pageinit", function () {
-  $("form").validate({
-    rules: {
-      UpdateNameOfRP: {
-        required: true
-      },
-      UpdateDimensions: {
-        required: true
-      },
-      UpdateMRP: {
-        required: true
-      },
-      UpdateStorageTypes: {
-        required: true
-      },
-      UpdateStorageFeatures: {
-        required: true
-      }
-    },
-    messages: {
-      UpdateNameOfRP: {
-        required: 'Please Enter Name'
-      },
-      UpdateDimensions: {
-        required: 'Please Enter Dimensions'
-      },
-      UpdateMRP: {
-        required: 'Please Enter Month Rent Price'
-      },
-      UpdateStorageTypes: {
-        required: 'Please Choose Storages Types'
-      },
-      UpdateStorageFeatures: {
-        required: 'Please Choose Storages Features'
-      }
-    },
-    errorPlacement: function (error, element) {
-      error.insertAfter(element.parent());
-    },
-    submitHandler: function (form) {
-      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Update());
-      return false;
-    }
-  });
-});
-
-
 
 // TAO BANG
 function CreateDB() {
@@ -155,7 +70,13 @@ function CreateDB() {
 }
 
 
-
+function refreshPage() {
+  jQuery.mobile.changePage(window.location.href, {
+    allowSamePageTransition: true,
+    transition: 'none',
+    reloadPage: true
+  });
+}
 
 function GetData() {
 
@@ -286,6 +207,7 @@ function GetData() {
 
 function Submit() {
 
+
   var d = new Date();
   var strDate = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
   console.log(strDate);
@@ -320,6 +242,7 @@ function Submit() {
         document.getElementById('StorageTypes').value = 'default';
         document.getElementById('StorageFeatures').value = 'default';
         alert("Success");
+
         GetData();
 
       },
@@ -353,6 +276,7 @@ function Update() {
         $("#UpdateNameOfRP").val("");
         $("#UpdateStorageTypes").val("default");
         $("#UpdateStorageFeatures").val("default");
+
         GetData();
       },
       function (error) {
@@ -497,6 +421,7 @@ function Edit(ID) {
         html += "<option value='" + result.rows.item(i).ID + "'>" + result.rows.item(i).STORAGESTYPESNAME + "</option>";
       }
       $("#UpdateStorageTypes").html(html);
+
     });
   });
 
@@ -518,9 +443,10 @@ function Edit(ID) {
         $("#UpdateIDMS").val(Id);
         $("#UpdateDimensions").val(DIMENSIONS);
         $("#UpdateMRP").val(MONTHRENTPRICE);
-        $("#UpdateStorageTypes ").val(STORAGETYPES);
-        $("#UpdateStorageFeatures").val(STORAGEFEATURES);
-
+        $("#UpdateStorageTypes option[value=" + STORAGETYPES + "]").attr('selected', 'selected');
+        $("#UpdateStorageTypes").selectmenu('refresh');
+        $("#UpdateStorageFeatures option[value=" + STORAGEFEATURES + "]").attr('selected', 'selected');
+        $("#UpdateStorageFeatures").selectmenu('refresh');
         $("#UpdateNotes").val(NOTE);
         $("#UpdateNameOfRP").val(REPORTNAME);
         GetData();

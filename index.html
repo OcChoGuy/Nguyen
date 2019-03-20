@@ -6,108 +6,354 @@
   <meta charset="utf-8" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
   <link rel="stylesheet" href="www/js/jquery.mobile-1.4.5.css" />
+  <link rel="stylesheet" href="www/css/MyStogere.css">
   <script src="www/js/jquery-1.11.1.js"></script>
   <script src="www/js/jquery.mobile-1.4.5.js"></script>
   <script src="www/js/jquery.validate.js"></script>
+  <script src="www/js/DBMyStorages.js"></script>
 
   <title>Hello World</title>
 </head>
 
 <body>
-  <div id="page1" data-role="page">
+
+  <div data-role="page" id="mainPage">
+    <div data-role="panel" id="mypanel" data-display="reveal" data-position="left">
+      <a href="#AddSFPage" class="ui-btn" data-transition="pop">Add Storages Features</a>
+      <a href="#AddSTPage" class="ui-btn" data-transition="pop">Add Storages Types</a>
+    </div><!-- /panel -->
     <div data-role="header">
-      <h1>Welcome</h1>
-    </div>
-    <div data-role="content">
-      <form id="Demo">
-        <div data-role="fieldcontain">
-          <label for="Name">Name: </label>
-          <input type="text" name="Name" id="Name">
+
+      <h1>My Storages</h1>
+      <a href="#mypanel" class="ui-btn">Menu</a>
+      <a href="#AddMainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true"
+        data-transition="pop">Add New</a>
+
+      <div data-role="main">
+        <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true"
+          data-filter-placeholder="Search Name Of Report..." data-split-icon="gear" data-split-theme="a">
+
+        </ul>
+        <div data-role="popup" id="purchase" data-theme="a" data-overlay-theme="b" class="ui-content"
+          style="max-width:400px; padding-bottom:8em;">
+           
         </div>
-        <input data-role="submit" type="submit" value="Login">
-      </form>
+      </div>
     </div>
+    <!-- /content -->
   </div>
-  <div id="page2" data-role="page">
+
+  <!--Add Main Page-->
+  <div data-role="page" id="AddMainPage">
     <div data-role="header">
-      <h1>ABC</h1>
+      <h1>Fill The Form</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+
+    </div>
+    <!-- /header -->
+
+    <div data-role="content">
+      <form id="Addvalid">
+
+        <input type="hidden" name="IDMS" id="IDMS" />
+        <div data-role="fieldcontain">
+          <label for="NameOfRP" data-theme="d">Name Of The Report:</label>
+          <input type="text" name="NameOfRP" id="NameOfRP" placeholder="Input The Name Of The Report" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Dimensions" data-theme="d">Dimensions:</label>
+          <input type="number" name="Dimensions" id="Dimensions" placeholder="e.g. 2m2, 4m2, etc." />
+        </div>
+        <div data-role="fieldcontain">
+          <label for="MRP" data-theme="d">Monthly Rent Price :</label>
+          <input type="number" name="MRP" id="MRP" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageTypes" data-theme="d">Storage Type:</label>
+          <select name="StorageTypes" id="StorageTypes">
+            <option selected="selected" value="default">--Choose Storage Type--</option>
+          </select>
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="StorageFeatures" data-theme="d">Storage Features:</label>
+          <select name="StorageFeatures" id="StorageFeatures">
+            <option selected="selected" value="default">--Choose Storage Features--</option>
+          </select>
+        </div>
+
+
+        <div data-role="fieldcontain">
+          <label for="Notes" data-theme="d">Notes:</label>
+          <textarea name="Notes" id="Notes" cols="30" rows="10"></textarea>
+        </div>
+        <input data-role="submit" type="submit" value="Submit">
+      </form>
+
+
+
     </div>
 
 
-  </div>
+    <!-- /footer -->
 
+    <!-- /footer -->
+  </div>
+  <!-- /page -->
+  <!-- Update Main Page -->
+  <div data-role="page" id="UpdateMainPage">
+    <div data-role="header">
+      <h1>Fill The Form</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+
+    </div>
+    <!-- /header -->
+
+    <div data-role="content">
+      <form id="Updatevalid">
+
+        <input type="hidden" name="UpdateIDMS" id="UpdateIDMS" />
+
+        <div data-role="fieldcontain">
+
+          <label for="UpdateNameOfRP" data-theme="d">Name Of The Report:</label>
+          <input type="text" name="UpdateNameOfRP" id="UpdateNameOfRP" placeholder="Input The Name Of The Report" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="UpdateDimensions" data-theme="d">Dimensions:</label>
+          <input type="number" name="UpdateDimensions" id="UpdateDimensions" placeholder="e.g. 2m2, 4m2, etc." />
+        </div>
+        <div data-role="fieldcontain">
+          <label for="UpdateMRP" data-theme="d">Monthly Rent Price :</label>
+          <input type="number" name="UpdateMRP" id="UpdateMRP" />
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="UpdateStorageTypes">Storage Type:</label>
+          <select name="UpdateStorageTypes" id="UpdateStorageTypes">
+
+          </select>
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="UpdateStorageFeatures">Storage Features:</label>
+          <select name="UpdateStorageFeatures" id="UpdateStorageFeatures">
+
+          </select>
+        </div>
+
+        <div data-role="fieldcontain">
+          <label for="Notes" data-theme="d">Notes:</label>
+          <textarea name="UpdateNotes" id="UpdateNotes" cols="30" rows="10"></textarea>
+
+        </div>
+
+
+
+
+        <!-- /content-->
+
+        <div data-role="footer" data-position="fixed">
+          <nav data-role="navbar">
+            <ul>
+
+              <li> <input data-role="submit" type="submit" value="Update"></li>
+            </ul>
+          </nav>
+        </div>
+
+      </form>
+      <!-- /footer -->
+    </div>
+  </div>
+  <!-- end -->
+  <!--Add Storage Feature Page-->
+  <div data-role="page" id="AddSFPage" data-theme="a">
+    <div data-role="header">
+      <h1>Storages Feature</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+    </div>
+    <!-- /header -->
+
+    <div role="main" class="ui-content">
+      <!-- FORM INPUT   -->
+      <div>
+        <div data-role="fieldcontain">
+          <input type="hidden" name="IDSF" id="IDSF" />
+          <label for="StoragesFeatures" data-theme="d">Storages Feature:</label>
+          <input type="text" name="NameSF" id="NameSF" placeholder="Input Storage Feature" />
+          <br>
+          <div data-type="horizontal" style="text-align:center">
+            <button onclick="SubmitSF()" class="ui-btn ">Submit</button>
+
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- SHOW DATA -->
+      <div>
+        <table id="ShowDataSF" data-role="table" class="ui-responsive table-stroke"></table>
+      </div>
+    </div>
+    <!-- /content -->
+
+
+    <!-- /footer -->
+  </div>
+  <!-- /page -->
+
+
+  <!--Add Storage Types Page-->
+  <div data-role="page" id="AddSTPage">
+    <div data-role="header">
+      <h1>Storages Type</h1>
+      <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Home</a>
+    </div>
+    <!-- /header -->
+
+    <div role="main" class="ui-content">
+      <div>
+        <div data-role="fieldcontain">
+          <input type="hidden" name="IDST" id="IDST" />
+          <label for="StoragesTypes" data-theme="d">Storages Type:</label>
+          <input type="text" name="NameST" id="NameST" placeholder="Input Storage Types" />
+
+          <div data-type="horizontal" style="text-align:center">
+            <br>
+            <button onclick="SubmitST()" class="ui-btn ">
+              Submit
+            </button>
+
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- SHOW DATA -->
+      <div>
+        <table id="ShowDataST" data-role="table" class="ui-responsive table-stroke"></table>
+      </div>
+    </div>
+  </div>
+  <!-- /content -->
+  <!-- DEtail -->
+  <div data-role="page" id="Detail">
+
+    <div data-role="header">
+      <h1>Detail</h1> <a href="#mainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow"
+        data-enhanced="true">Home</a>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+      <div id="ShowDetail"></div>
+
+
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+      <nav data-role="navbar" id="footermain">
+
+      </nav>
+    </div>
+  </div><!-- /page -->
+  <!-- /page -->
 </body>
 
 </html>
 
-
 <script>
-  var db = window.openDatabase(
-    "1661aasd",
-    "1.0",
-    "My Storeges",
-    200000000000000
-  );
-  $(document).ready(function () {
-
-    CreateDB();
-  });
-  $("#page1").on("pageinit", function () {
-    $("form").validate({
-      rules: {
-        Name: {
-          required: true
-        }
+  $("#Addvalid").validate({
+    rules: {
+      NameOfRP: {
+        required: true
       },
-      messages: {
-        Name: {
-          required: 'Please Enter Name'
-        }
+      Dimensions: {
+        required: true
       },
-      errorPlacement: function (error, element) {
-        error.insertAfter(element.parent());
+      MRP: {
+        required: true
       },
-      submitHandler: function (form) {
-        $(':mobile-pagecontainer').pagecontainer('change', '#page2', Submit());
-        return false;
+      StorageTypes: {
+        required: true
+      },
+      StorageFeatures: {
+        required: true
       }
-    });
+    },
+    messages: {
+      NameOfRP: {
+        required: 'Please Enter Name'
+      },
+      Dimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      MRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      StorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      StorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
 
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Submit());
+      return false;
+    }
   });
 
-  function Submit() {
-    db.transaction(function (tx) {
-      var namea = $("#Name").val();
-      var sqlStatement = "INSERT INTO ABC(NAME) VALUES(?)";
-      tx.executeSql(
-        sqlStatement,
-        [namea],
-        function (tx, result) {
-          $("#Name").val("");
-          console.log("DONE");
-        }
-      )
-    });
+  $("#Updatevalid").validate({
+    rules: {
+      UpdateNameOfRP: {
+        required: true
+      },
+      UpdateDimensions: {
+        required: true
+      },
+      UpdateMRP: {
+        required: true
+      },
+      UpdateStorageTypes: {
+        required: true
+      },
+      UpdateStorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      UpdateNameOfRP: {
+        required: 'Please Enter Name'
+      },
+      UpdateDimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      UpdateMRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      UpdateStorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      UpdateStorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
 
-  }
-
-  function CreateDB() {
-
-    db.transaction(function (tx) {
-      var sqlStatement =
-        "CREATE TABLE IF NOT EXISTS ABC(ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT)";
-      tx.executeSql(
-        sqlStatement,
-        [],
-        function (tx, result) {
-          console.log("Create table MAIN success.");
-        },
-        function (error) {
-          console.log("loi");
-        }
-      );
-    });
-  }
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Update());
+      return false;
+    }
+  });
 </script>
