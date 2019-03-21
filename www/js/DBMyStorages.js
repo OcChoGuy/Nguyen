@@ -1,10 +1,4 @@
 // Mo DB
-
-
-
-$("#mainPage").on("pageinit", function () {
-  console.log("asd");
-});
 var db = window.openDatabase(
   "1661a",
   "1.0",
@@ -16,17 +10,108 @@ $(document).ready(function () {
 
   CreateDB();
   GetData();
+});
 
+$("#AddMainPage").on("pageinit", function () {
+  $("form").validate({
+    rules: {
+      NameOfRP: {
+        required: true
+      },
+      Dimensions: {
+        required: true
+      },
+      MRP: {
+        required: true
+      },
+      StorageTypes: {
+        required: true
+      },
+      StorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      NameOfRP: {
+        required: 'Please Enter Name'
+      },
+      Dimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      MRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      StorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      StorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+      $(':mobile-pagecontainer').pagecontainer('change', '#page1', Submit());
+      return false;
+    }
+  });
+
+});
+// fix luc chuyen trang
+$("#UpdateMainPage").on("pageinit", function () {
+  $("form").validate({
+    rules: {
+      UpdateNameOfRP: {
+        required: true
+      },
+      UpdateDimensions: {
+        required: true
+      },
+      UpdateMRP: {
+        required: true
+      },
+      UpdateStorageTypes: {
+        required: true
+      },
+      UpdateStorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      UpdateNameOfRP: {
+        required: 'Please Enter Name'
+      },
+      UpdateDimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      UpdateMRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      UpdateStorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      UpdateStorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Update());
+      return false;
+    }
+  });
 });
 
 
-// fix luc chuyen trang
 
 // TAO BANG
 function CreateDB() {
   db.transaction(function (tx) {
     var sqlStatement =
-      "CREATE TABLE IF NOT EXISTS MYSTORAGES(ID INTEGER PRIMARY KEY  AUTOINCREMENT, DIMENSIONS INTEGER, DATETIME TEXT,MONTHRENTPRICE INTEGER,NOTE TEXT, REPORTNAME TEXT,STORAGEFEATURES INTEGER,STORAGETYPES INTEGER)";
+      "CREATE TABLE IF NOT EXISTS MYSTORAGES(ID INTEGER PRIMARY KEY  AUTOINCREMENT, DIMENSIONS INTEGER, DATETIME TEXT,MONTHRENTPRICE INTEGER,NOTE TEXT, REPORTNAME TEXT, STORAGEFEATURES INTEGER,STORAGETYPES INTEGER)";
     tx.executeSql(
       sqlStatement,
       [],
@@ -70,51 +155,33 @@ function CreateDB() {
 }
 
 
-function refreshPage() {
-  jQuery.mobile.changePage(window.location.href, {
-    allowSamePageTransition: true,
-    transition: 'none',
-    reloadPage: true
-  });
-}
+
 
 function GetData() {
 
   db.transaction(function (tx) {
-    var sqlStatement = "SELECT * FROM MYSTORAGES";
+    var sqlStatement = 'SELECT a.DATETIME,a.REPORTNAME,a.ID, b.STORAGESFEATURESNAME ,c.STORAGESTYPESNAME  from MYSTORAGES as a, STORAGEFEATURES as b, STORAGETYPES as c where a.STORAGEFEATURES = b.ID and a.STORAGETYPES=c.ID';
+    
     tx.executeSql(
       sqlStatement,
       [],
       function (tx, result) {
+        console.log(result);
         var length = result.rows.length,
           i;
         var html = "";
         var html2 = "";
         for (i = 0; i < length; i++) {
-          var StorageId = result.rows.item(i).STORAGEFEATURES;
-          var StorageType = result.rows.item(i).STORAGETYPES;
+         
           html +=
             "<li onclick=Detail(" + result.rows.item(i).ID + ")><a href='#Detail'><h2>" +
             result.rows.item(i).REPORTNAME +
             "</h2><p class='ui-li-aside'>" +
             result.rows.item(i).DATETIME +
             "</p>";
-          //get data storages features
-          db.transaction(function (tx) {
-            var sqlStatement = "SELECT * FROM STORAGEFEATURES WHERE ID=?";
-            tx.executeSql(sqlStatement, [StorageId], function (tx, result2) {
-              $(".Feature").html(result2.rows.item(0).STORAGESFEATURESNAME);
-            });
-          });
-          //get data storages types
-          db.transaction(function (tx) {
-            var sqlStatement = "SELECT * FROM STORAGETYPES WHERE ID=?";
-            tx.executeSql(sqlStatement, [StorageType], function (tx, result2) {
-              $(".Type").html(result2.rows.item(0).STORAGESTYPESNAME);
-            });
-          });
-          html += "<p class='Feature'></p>";
-          html += "<p class='Type'></p>";
+          
+          html += "<p>"+result.rows.item(i).STORAGESFEATURESNAME+"</p>";
+          html += "<p>"+result.rows.item(i).STORAGESTYPESNAME+"</p>";
           html += "<p id='NoteUpdate'>Note: " + result.rows.item(i).NOTE + "</p></a>"
           html += " <a href='#purchase' onclick='EditNote(" + result.rows.item(i).ID + ")' data-rel='popup' data-position-to='window' data-transition='pop'>P</a>";
           html += "</li>";
@@ -130,7 +197,7 @@ function GetData() {
         $("#purchase").html(html2);
       },
       function (error) {
-        console.log(error);
+        console.log("loi");
       }
     );
   });
@@ -207,7 +274,6 @@ function GetData() {
 
 function Submit() {
 
-
   var d = new Date();
   var strDate = d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
   console.log(strDate);
@@ -242,7 +308,6 @@ function Submit() {
         document.getElementById('StorageTypes').value = 'default';
         document.getElementById('StorageFeatures').value = 'default';
         alert("Success");
-
         GetData();
 
       },
@@ -276,7 +341,6 @@ function Update() {
         $("#UpdateNameOfRP").val("");
         $("#UpdateStorageTypes").val("default");
         $("#UpdateStorageFeatures").val("default");
-
         GetData();
       },
       function (error) {
@@ -421,7 +485,6 @@ function Edit(ID) {
         html += "<option value='" + result.rows.item(i).ID + "'>" + result.rows.item(i).STORAGESTYPESNAME + "</option>";
       }
       $("#UpdateStorageTypes").html(html);
-
     });
   });
 
@@ -443,10 +506,9 @@ function Edit(ID) {
         $("#UpdateIDMS").val(Id);
         $("#UpdateDimensions").val(DIMENSIONS);
         $("#UpdateMRP").val(MONTHRENTPRICE);
-        $("#UpdateStorageTypes option[value=" + STORAGETYPES + "]").attr('selected', 'selected');
-        $("#UpdateStorageTypes").selectmenu('refresh');
-        $("#UpdateStorageFeatures option[value=" + STORAGEFEATURES + "]").attr('selected', 'selected');
-        $("#UpdateStorageFeatures").selectmenu('refresh');
+        $("#UpdateStorageTypes ").val(STORAGETYPES);
+        $("#UpdateStorageFeatures").val(STORAGEFEATURES);
+
         $("#UpdateNotes").val(NOTE);
         $("#UpdateNameOfRP").val(REPORTNAME);
         GetData();
