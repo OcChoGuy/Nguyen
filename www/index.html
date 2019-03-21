@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 
 <head>
   <meta charset="utf-8" />
@@ -8,34 +9,28 @@
   <meta name="viewport"
     content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
   <link rel="stylesheet" href="js/jquery.mobile-1.4.5.css" />
-
+  <link rel="stylesheet" href="css/MyStogere.css">
   <script src="js/jquery-1.11.1.js"></script>
   <script src="js/jquery.mobile-1.4.5.js"></script>
-  <script src="js/dateformat.js"></script>
-  <script src="js/DBMyStorages.js"></script>
   <script src="js/jquery.validate.js"></script>
+  <script src="js/DBMyStorages.js"></script>
 
-
-
-  <title>My Storages</title>
-
+  <title></title>
 </head>
-<!-- /header -->
 
 <body>
-  <!-- side menu -->
 
-  <!-- Start of first page -->
   <div data-role="page" id="mainPage">
     <div data-role="panel" id="mypanel" data-display="reveal" data-position="left">
-      <a href="#AddSFPage" class="ui-btn">Add Storages Features</a>
-      <a href="#AddSTPage" class="ui-btn">Add Storages Types</a>
+      <a href="#AddSFPage" class="ui-btn" data-transition="pop">Add Storages Features</a>
+      <a href="#AddSTPage" class="ui-btn" data-transition="pop">Add Storages Types</a>
     </div><!-- /panel -->
     <div data-role="header">
 
       <h1>My Storages</h1>
       <a href="#mypanel" class="ui-btn">Menu</a>
-      <a href="#AddMainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true">Add New</a>
+      <a href="#AddMainPage" class="ui-input-btn ui-btn ui-corner-all ui-shadow" data-enhanced="true"
+        data-transition="pop">Add New</a>
 
       <div data-role="main">
         <ul data-role="listview" data-inset="true" id="ListMS" data-filter="true"
@@ -51,10 +46,6 @@
     <!-- /content -->
   </div>
 
-  <!-- /page -->
-
-
-
   <!--Add Main Page-->
   <div data-role="page" id="AddMainPage">
     <div data-role="header">
@@ -65,7 +56,7 @@
     <!-- /header -->
 
     <div data-role="content">
-      <form id="Demo">
+      <form id="Addvalid">
 
         <input type="hidden" name="IDMS" id="IDMS" />
         <div data-role="fieldcontain">
@@ -114,8 +105,6 @@
     <!-- /footer -->
   </div>
   <!-- /page -->
-
-
   <!-- Update Main Page -->
   <div data-role="page" id="UpdateMainPage">
     <div data-role="header">
@@ -126,7 +115,7 @@
     <!-- /header -->
 
     <div data-role="content">
-      <form>
+      <form id="Updatevalid">
 
         <input type="hidden" name="UpdateIDMS" id="UpdateIDMS" />
 
@@ -146,16 +135,16 @@
         </div>
 
         <div data-role="fieldcontain">
-          <label for="UpdateStorageTypes" data-theme="d">Storage Type:</label>
+          <label for="UpdateStorageTypes">Storage Type:</label>
           <select name="UpdateStorageTypes" id="UpdateStorageTypes">
-            <option selected="selected" value="default">--Choose Storage Type--</option>
+
           </select>
         </div>
 
         <div data-role="fieldcontain">
-          <label for="UpdateStorageFeatures" data-theme="d">Storage Features:</label>
+          <label for="UpdateStorageFeatures">Storage Features:</label>
           <select name="UpdateStorageFeatures" id="UpdateStorageFeatures">
-            <option selected="selected" value="default">--Choose Storage Features--</option>
+
           </select>
         </div>
 
@@ -183,6 +172,7 @@
       <!-- /footer -->
     </div>
   </div>
+  <!-- end -->
   <!--Add Storage Feature Page-->
   <div data-role="page" id="AddSFPage" data-theme="a">
     <div data-role="header">
@@ -218,6 +208,7 @@
   </div>
   <!-- /page -->
 
+
   <!--Add Storage Types Page-->
   <div data-role="page" id="AddSTPage">
     <div data-role="header">
@@ -250,9 +241,6 @@
     </div>
   </div>
   <!-- /content -->
-
-  <!-- /page -->
-
   <!-- DEtail -->
   <div data-role="page" id="Detail">
 
@@ -273,9 +261,99 @@
       </nav>
     </div>
   </div><!-- /page -->
-
-
+  <!-- /page -->
 </body>
 
-
 </html>
+
+<script>
+  $("#Addvalid").validate({
+    rules: {
+      NameOfRP: {
+        required: true
+      },
+      Dimensions: {
+        required: true
+      },
+      MRP: {
+        required: true
+      },
+      StorageTypes: {
+        required: true
+      },
+      StorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      NameOfRP: {
+        required: 'Please Enter Name'
+      },
+      Dimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      MRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      StorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      StorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Submit());
+      return false;
+    }
+  });
+
+  $("#Updatevalid").validate({
+    rules: {
+      UpdateNameOfRP: {
+        required: true
+      },
+      UpdateDimensions: {
+        required: true
+      },
+      UpdateMRP: {
+        required: true
+      },
+      UpdateStorageTypes: {
+        required: true
+      },
+      UpdateStorageFeatures: {
+        required: true
+      }
+    },
+    messages: {
+      UpdateNameOfRP: {
+        required: 'Please Enter Name'
+      },
+      UpdateDimensions: {
+        required: 'Please Enter Dimensions'
+      },
+      UpdateMRP: {
+        required: 'Please Enter Month Rent Price'
+      },
+      UpdateStorageTypes: {
+        required: 'Please Choose Storages Types'
+      },
+      UpdateStorageFeatures: {
+        required: 'Please Choose Storages Features'
+      }
+    },
+    errorPlacement: function (error, element) {
+      error.insertAfter(element.parent());
+    },
+    submitHandler: function (form) {
+
+      $(':mobile-pagecontainer').pagecontainer('change', '#mainPage', Update());
+      return false;
+    }
+  });
+</script>

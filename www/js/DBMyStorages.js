@@ -1,6 +1,6 @@
 // Mo DB
 var db = window.openDatabase(
-  "1661a",
+  "NguyenDB",
   "1.0",
   "My Storeges",
   200000000000000
@@ -111,7 +111,7 @@ $("#UpdateMainPage").on("pageinit", function () {
 function CreateDB() {
   db.transaction(function (tx) {
     var sqlStatement =
-      "CREATE TABLE IF NOT EXISTS MYSTORAGES(ID INTEGER PRIMARY KEY  AUTOINCREMENT, DIMENSIONS INTEGER, DATETIME TEXT,MONTHRENTPRICE INTEGER,NOTE TEXT, REPORTNAME TEXT, STORAGEFEATURES INTEGER,STORAGETYPES INTEGER)";
+      "CREATE TABLE IF NOT EXISTS MYSTORAGES(ID INTEGER PRIMARY KEY  AUTOINCREMENT, DIMENSIONS INTEGER, DATETIME TEXT,MONTHRENTPRICE INTEGER, NOTE TEXT, REPORTNAME TEXT, STORAGEFEATURES INTEGER,STORAGETYPES INTEGER)";
     tx.executeSql(
       sqlStatement,
       [],
@@ -160,7 +160,7 @@ function CreateDB() {
 function GetData() {
 
   db.transaction(function (tx) {
-    var sqlStatement = 'SELECT a.DATETIME,a.REPORTNAME,a.ID, b.STORAGESFEATURESNAME ,c.STORAGESTYPESNAME  from MYSTORAGES as a, STORAGEFEATURES as b, STORAGETYPES as c where a.STORAGEFEATURES = b.ID and a.STORAGETYPES=c.ID';
+    var sqlStatement = 'SELECT a.NOTE,a.DATETIME,a.REPORTNAME,a.ID, b.STORAGESFEATURESNAME ,c.STORAGESTYPESNAME  from MYSTORAGES as a, STORAGEFEATURES as b, STORAGETYPES as c where a.STORAGEFEATURES = b.ID and a.STORAGETYPES=c.ID';
     
     tx.executeSql(
       sqlStatement,
