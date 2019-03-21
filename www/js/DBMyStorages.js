@@ -384,7 +384,7 @@ function UpdateNote() {
       function (tx, result) {
         console.log(note);
 
-        alert("Update Succesfully");
+        alert("Change Note Succesfully");
         $("#NoteTextArea").val("");
         $("#IDNOTE").val();
         GetData();
@@ -451,7 +451,7 @@ function Delete(ID) {
       sqlStatement,
       [ID],
       function (tx, results) {
-        alert("Xoa Thanh Cong");
+        alert("Delete Success.");
         GetData();
       },
       function (error) {
